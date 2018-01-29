@@ -7,6 +7,8 @@
   <modules>
   	<module>netty-demo-server</module>
   	<module>netty-demo-client</module>
+  	<module>socket-server</module>
+  	<module>socket-client</module>
   </modules>
   
   
