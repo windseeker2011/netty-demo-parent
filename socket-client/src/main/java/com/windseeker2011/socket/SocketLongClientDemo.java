@@ -45,15 +45,15 @@ class SocketLongClient implements Runnable {
 			public void run() {
 				while (true) {
 					try {
-						Thread.sleep(10000);
-						os.write("keep-alive\n".getBytes());
-						os.flush();
-						// bw.write("keep-alive");
-						// bw.flush();
+						Thread.sleep(5000);
+						System.out.println("发送一个心跳包");
+						bw.write("keep-alive\n");
+						bw.flush();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					} catch (IOException e) {
 						e.printStackTrace();
+						break;
 					}
 				}
 			}
@@ -75,7 +75,7 @@ class SocketLongClient implements Runnable {
 			 */
 			sendHeartBeat();
 			/*
-			 * 3.
+			 * 3.逻辑处理
 			 */
 			Scanner scanner = new Scanner(System.in);
 			while (scanner.hasNextLine()) {
@@ -93,6 +93,13 @@ class SocketLongClient implements Runnable {
 				is = socket.getInputStream();
 				br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
 				System.out.println("server: " + br.readLine());
+				/*
+				 * 断开标识，关闭长连接
+				 */
+				if ("exit".equals(line)) {
+					socket.shutdownInput();// 关闭输入流
+					break;
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
