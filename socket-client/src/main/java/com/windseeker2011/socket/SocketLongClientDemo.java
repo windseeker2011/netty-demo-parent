@@ -69,6 +69,7 @@ class SocketLongClient implements Runnable {
 			if (socket == null || socket.isClosed()) {
 				socket = new Socket("127.0.0.1", 8888);
 				os = socket.getOutputStream();
+				bw = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
 			}
 			/*
 			 * 2.保持心跳机制
@@ -84,7 +85,6 @@ class SocketLongClient implements Runnable {
 				/*
 				 * 问一次，写结尾符
 				 */
-				bw = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
 				bw.write(line + "\n");
 				bw.flush();
 				/*
