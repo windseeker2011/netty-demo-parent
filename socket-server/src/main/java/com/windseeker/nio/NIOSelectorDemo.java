@@ -1,9 +1,6 @@
 package com.windseeker.nio;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -52,10 +49,10 @@ public class NIOSelectorDemo {
 				if (key.isReadable()) {
 					System.out.println("isReadable = true");
 					SocketChannel clntChan = (SocketChannel) key.channel();
-//					clntChan.configureBlocking(false);
+					// clntChan.configureBlocking(false);
 					ByteBuffer buffer = ByteBuffer.allocate(bufSize);
 					int len = 0;
-					while ( (len = clntChan.read(buffer)) > 0 ) {
+					while ((len = clntChan.read(buffer)) > 0) {
 						System.out.println("read > " + new String(buffer.array()));
 					}
 					buffer.flip();
@@ -70,13 +67,16 @@ public class NIOSelectorDemo {
 					ByteBuffer buffer = (ByteBuffer) key.attachment();
 					buffer.flip();
 					System.out.println("write > " + new String(buffer.array()));
-					
+
 					SocketChannel clntChan = (SocketChannel) key.channel();
-//					clntChan.configureBlocking(false);
+					// clntChan.configureBlocking(false);
 					clntChan.write(buffer);
-					
-					key.interestOps(SelectionKey.OP_READ);
-//					key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
+
+					if (buffer.remaining() == 0) {
+						buffer.clear();
+						key.interestOps(SelectionKey.OP_READ);
+					}
+					// key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
 				}
 
 				if (key.isConnectable()) {
