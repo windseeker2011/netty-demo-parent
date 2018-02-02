@@ -5,6 +5,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.LineBasedFrameDecoder;
 
 /**
  * 简易netty服务器
@@ -22,7 +23,8 @@ public class NettySimpleServerDemo {
 				.childHandler(new ChannelInitializer<Channel>() {
 					@Override
 					protected void initChannel(Channel ch) throws Exception {
-						ch.pipeline().addLast("myServerHandler", new MySimpleServerHandler());
+						ch.pipeline().addLast(new LineBasedFrameDecoder(1024)).addLast("myServerHandler",
+								new MySimpleServerHandler());
 
 					}
 				}).bind(8888).sync();
