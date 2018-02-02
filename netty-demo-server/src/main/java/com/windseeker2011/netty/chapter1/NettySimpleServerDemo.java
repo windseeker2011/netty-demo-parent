@@ -6,6 +6,12 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
+/**
+ * 简易netty服务器
+ * 
+ * @author Weihai Li
+ *
+ */
 public class NettySimpleServerDemo {
 
 	public static void main(String[] args) throws Exception {
