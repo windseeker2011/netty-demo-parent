@@ -1,4 +1,4 @@
-package com.windseeker2011.netty;
+package com.windseeker2011.netty.chapter1;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

@@ -1,4 +1,4 @@
-package com.windseeker2011.netty;
+package com.windseeker2011.netty.chapter1;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
