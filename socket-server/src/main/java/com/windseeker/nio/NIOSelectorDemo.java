@@ -52,7 +52,7 @@ public class NIOSelectorDemo {
 				if (key.isReadable()) {
 					System.out.println("isReadable = true");
 					SocketChannel clntChan = (SocketChannel) key.channel();
-					clntChan.configureBlocking(false);
+//					clntChan.configureBlocking(false);
 					ByteBuffer buffer = ByteBuffer.allocate(bufSize);
 					int len = 0;
 					while ( (len = clntChan.read(buffer)) > 0 ) {
@@ -68,12 +68,12 @@ public class NIOSelectorDemo {
 				if (key.isWritable() && key.isValid()) {
 					System.out.println("isWritable = true");
 					ByteBuffer buffer = (ByteBuffer) key.attachment();
+					buffer.flip();
 					System.out.println("write > " + new String(buffer.array()));
 					
 					SocketChannel clntChan = (SocketChannel) key.channel();
-					clntChan.configureBlocking(false);
+//					clntChan.configureBlocking(false);
 					clntChan.write(buffer);
-					buffer.clear();
 					
 					key.interestOps(SelectionKey.OP_READ);
 //					key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
