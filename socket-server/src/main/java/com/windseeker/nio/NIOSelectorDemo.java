@@ -20,21 +20,20 @@ public class NIOSelectorDemo {
 	public static void main(String[] args) throws Exception {
 		Selector selector = Selector.open();
 		/*
-		 * 多个ServerSocketChannel
+		 * 接客大厅
 		 */
 		ServerSocketChannel serverChannel = ServerSocketChannel.open();
 		serverChannel.configureBlocking(false);
 		serverChannel.socket().bind(new InetSocketAddress(8888));
 		/*
-		 * 注册到同一个Selector
+		 * 提供“接客”功能
 		 */
 		serverChannel.register(selector, SelectionKey.OP_ACCEPT);
 
 		while (true) {
-			int n = selector.select();
-			if (n == 0) {
-				continue;
-			}
+			// 是否有客人来
+			selector.select();
+			// 前台接客
 			Iterator<SelectionKey> ite = selector.selectedKeys().iterator();
 			while (ite.hasNext()) {
 				SelectionKey key = ite.next();
