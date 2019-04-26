@@ -1,14 +1,13 @@
-package com.windseeker2011.netty;
+package com.windseeker2011.netty.chapter1;
 
 import java.util.List;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 
-public class MyMessageDecoder extends ByteToMessageDecoder {
-	
+public class MySimpleMessageDecoder extends ByteToMessageDecoder {
+
 	private static final int HEADER_LENGTH = 4;
 
 	@Override
@@ -17,7 +16,7 @@ public class MyMessageDecoder extends ByteToMessageDecoder {
 		if (in.readableBytes() < HEADER_LENGTH) {
 			return;
 		}
-		
+
 		in.markReaderIndex();
 		// 读取正文长度
 		int dataLength = in.readInt();
@@ -26,14 +25,14 @@ public class MyMessageDecoder extends ByteToMessageDecoder {
 			return;
 		}
 		if (in.readableBytes() < dataLength) {
-			//in.resetReaderIndex();
+			// in.resetReaderIndex();
 			in.release();
 			return;
 		}
-		
+
 		byte[] b = new byte[dataLength];
 		in.readBytes(b);
-		
+
 		out.add("sucess");
 	}
 

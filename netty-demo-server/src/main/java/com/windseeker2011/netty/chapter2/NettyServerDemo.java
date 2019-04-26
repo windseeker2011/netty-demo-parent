@@ -1,29 +1,27 @@
 package com.windseeker2011.netty.chapter2;
 
-import com.windseeker2011.netty.MyMessageDecoder;
-import com.windseeker2011.netty.MyMessageEncoder;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.LineBasedFrameDecoder;
-
+/**
+ * Netty服务
+ * 
+ * @author Weihai Li
+ *
+ */
 public class NettyServerDemo {
 
 	public static void main(String[] args) throws Exception {
-		ServerBootstrap serverBootstrap = new ServerBootstrap();
-		NioEventLoopGroup parentGroup = new NioEventLoopGroup();
-		NioEventLoopGroup childGroup = new NioEventLoopGroup();
-		serverBootstrap.group(parentGroup, childGroup).channel(NioServerSocketChannel.class)
-				.childHandler(new ChannelInitializer<Channel>() {
-					@Override
-					protected void initChannel(Channel ch) throws Exception {
-						ch.pipeline().addLast(new LineBasedFrameDecoder(1024)).addLast(new MyMessageEncoder())
-								.addLast(new MyMessageDecoder());
-
-					}
-				}).bind(8888).sync();
+		NettyService service = new NettyService();
+		// 启动100个Netty服务
+		ExecutorService es = Executors.newFixedThreadPool(10);
+		for (int i = 0; i < 50; i++) {
+			es.submit(new Runnable() {
+				@Override
+				public void run() {
+					service.run();
+				}
+			});
+		}
 	}
 }
